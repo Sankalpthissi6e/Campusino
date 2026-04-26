@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title_suffix %} — Profile{% endblock %}
+
+{% block content %}
+<div class="glass-card profile-header fade-in">
+    <div class="avatar">{{ current_user.Name[0]|upper }}</div>
+    <div class="profile-info">
+        <h2>{{ current_user.Name }}</h2>
+        <p><i class="fas fa-envelope"></i> {{ current_user.Email }} &bull; <i class="fas fa-phone"></i> {{ current_user.Phone }}</p>
+        <p><i class="fas fa-calendar"></i> Joined {{ current_user.CreatedAt.strftime('%d %b %Y') }}</p>
+    </div>
+</div>
+
+<div class="profile-stats">
+    <div class="glass-card stat-card fade-in">
+        <div class="number">{{ current_user.products|length }}</div>
+        <div class="label">Products Listed</div>
+    </div>
+    <div class="glass-card stat-card fade-in">
+        <div class="number">{{ current_user.orders|length }}</div>
+        <div class="label">Purchases</div>
+    </div>
+    <div class="glass-card stat-card fade-in">
+        <div class="number">{{ current_user.reviews_left|length }}</div>
+        <div class="label">Reviews</div>
+    </div>
+</div>
+
+<div style="margin-top:2rem;">
+    <div class="page-header">
+        <h2>My Listings</h2>
+    </div>
+    <div class="product-grid">
+        {% for product in current_user.products %}
+        <div class="fade-in">
+            <div class="glass-card product-card">
+                <div class="card-header-row">
+                    <h3>{{ product.Title }}</h3>
+                    <span class="badge-c {% if product.Status == 'AVAILABLE' %}badge-success{% else %}badge-danger{% endif %}">{{ product.Status }}</span>
+                </div>
+                <div class="price">₹{{ "%.2f"|format(product.Price) }}</div>
+                <a href="{{ url_for('product_detail', product_id=product.ProductID) }}" class="btn-outline-c btn-sm">View</a>
+            </div>
+        </div>
+        {% else %}
+        <div class="empty-state" style="grid-column:1/-1;">
+            <div class="icon">📋</div>
+            <h3>No listings yet</h3>
+            <p><a href="{{ url_for('add_product') }}">List your first product!</a></p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

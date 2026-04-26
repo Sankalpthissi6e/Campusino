@@ -1,0 +1,120 @@
+CREATE TABLE User (
+    UserID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Name VARCHAR(100) NOT NULL,
+    Email VARCHAR(100) NOT NULL UNIQUE,
+    Password VARCHAR(100) NOT NULL,
+    Phone BIGINT NOT NULL,
+    Role VARCHAR(10) DEFAULT 'USER' CHECK(Role IN ('ADMIN', 'USER')),
+    CreatedAt DATETIME NOT NULL
+);
+
+CREATE TABLE Category (
+    CategoryID INTEGER PRIMARY KEY AUTOINCREMENT,
+    CategoryName VARCHAR(100) NOT NULL UNIQUE,
+    Description VARCHAR(255)
+);
+
+CREATE TABLE Product (
+    ProductID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Title VARCHAR(150) NOT NULL,
+    Description VARCHAR(500) NOT NULL,
+    Price DECIMAL(10,2) NOT NULL CHECK(Price > 0),
+    Type VARCHAR(10) NOT NULL CHECK(Type IN ('SELL', 'RENT')),
+    Condition VARCHAR(100) NOT NULL,
+    Status VARCHAR(20) DEFAULT 'AVAILABLE' CHECK(Status IN ('AVAILABLE', 'SOLD')),
+    PostedDate DATETIME NOT NULL,
+    SellerID INTEGER NOT NULL,
+    CategoryID INTEGER NOT NULL,
+    FOREIGN KEY (SellerID) REFERENCES User(UserID),
+    FOREIGN KEY (CategoryID) REFERENCES Category(CategoryID)
+);
+
+CREATE TABLE "Order" (
+    OrderID INTEGER PRIMARY KEY AUTOINCREMENT,
+    OrderDate DATETIME NOT NULL,
+    OrderStatus VARCHAR(20) NOT NULL CHECK(OrderStatus IN ('PENDING', 'CONFIRMED', 'CANCELLED')),
+    Quantity INTEGER NOT NULL,
+    BuyerID INTEGER NOT NULL,
+    ProductID INTEGER NOT NULL,
+    FOREIGN KEY (BuyerID) REFERENCES User(UserID),
+    FOREIGN KEY (ProductID) REFERENCES Product(ProductID)
+);
+
+CREATE TABLE Payment (
+    PaymentID INTEGER PRIMARY KEY AUTOINCREMENT,
+    PaymentMethod VARCHAR(20) NOT NULL CHECK(PaymentMethod IN ('UPI', 'CARD', 'CASH')),
+    PaymentStatus VARCHAR(20) NOT NULL CHECK(PaymentStatus IN ('SUCCESS', 'FAILED', 'PENDING')),
+    TransactionDate DATETIME NOT NULL,
+    OrderID INTEGER NOT NULL UNIQUE,
+    FOREIGN KEY (OrderID) REFERENCES "Order"(OrderID)
+);
+
+CREATE TABLE Message (
+    MessageID INTEGER PRIMARY KEY AUTOINCREMENT,
+    MessageText VARCHAR(500) NOT NULL,
+    Timestamp DATETIME NOT NULL,
+    SenderID INTEGER NOT NULL,
+    ReceiverID INTEGER NOT NULL,
+    ProductID INTEGER NOT NULL,
+    FOREIGN KEY (SenderID) REFERENCES User(UserID),
+    FOREIGN KEY (ReceiverID) REFERENCES User(UserID),
+    FOREIGN KEY (ProductID) REFERENCES Product(ProductID)
+);
+
+CREATE TABLE Review (
+    ReviewID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Rating INTEGER NOT NULL CHECK (Rating BETWEEN 1 AND 5),
+    Comment VARCHAR(255),
+    ReviewDate DATETIME NOT NULL,
+    UserID INTEGER NOT NULL,
+    ProductID INTEGER NOT NULL,
+    FOREIGN KEY (UserID) REFERENCES User(UserID),
+    FOREIGN KEY (ProductID) REFERENCES Product(ProductID)
+);
+
+CREATE TABLE Wishlist (
+    WishlistID INTEGER PRIMARY KEY AUTOINCREMENT,
+    UserID INTEGER NOT NULL,
+    ProductID INTEGER NOT NULL,
+    AddedDate DATETIME NOT NULL,
+    FOREIGN KEY (UserID) REFERENCES User(UserID),
+    FOREIGN KEY (ProductID) REFERENCES Product(ProductID)
+);
+
+CREATE TABLE Report (
+    ReportID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Reason VARCHAR(255) NOT NULL,
+    ReportDate DATETIME NOT NULL,
+    UserID INTEGER NOT NULL,
+    ProductID INTEGER NOT NULL,
+    FOREIGN KEY (UserID) REFERENCES User(UserID),
+    FOREIGN KEY (ProductID) REFERENCES Product(ProductID)
+);
+
+-- Views
+CREATE VIEW AvailableProducts AS
+SELECT Title, Price
+FROM Product
+WHERE Status = 'AVAILABLE';
+
+CREATE VIEW UserReviews AS
+SELECT User.Name, Review.Rating
+FROM Review
+JOIN User ON Review.UserID = User.UserID;
+
+-- Triggers (SQLite syntax)
+CREATE TRIGGER set_default_status
+AFTER INSERT ON "Order"
+FOR EACH ROW
+WHEN NEW.OrderStatus IS NULL
+BEGIN
+    UPDATE "Order" SET OrderStatus = 'PENDING' WHERE OrderID = NEW.OrderID;
+END;
+
+CREATE TRIGGER review_log
+AFTER INSERT ON Review
+FOR EACH ROW
+BEGIN
+    INSERT INTO Message(MessageText, Timestamp, SenderID, ReceiverID, ProductID)
+    VALUES ('New review added', CURRENT_TIMESTAMP, NEW.UserID, NEW.UserID, NEW.ProductID);
+END;

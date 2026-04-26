@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block title_suffix %} — {{ product.Title }}{% endblock %}
+
+{% block content %}
+<div class="detail-grid">
+    <!-- Main Product Info -->
+    <div class="glass-card detail-main">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:0.5rem;">
+            <h1 class="detail-title">{{ product.Title }}</h1>
+            <span class="type-badge {{ product.Type|lower }}" style="font-size:0.8rem;">{{ product.Type }}</span>
+        </div>
+        <div class="detail-price">₹{{ "%.2f"|format(product.Price) }}</div>
+        <div class="detail-meta">
+            <span class="badge-c badge-info">{{ product.category.CategoryName }}</span>
+            <span class="badge-c {% if product.Status == 'AVAILABLE' %}badge-success{% else %}badge-danger{% endif %}">{{ product.Status }}</span>
+            <span class="badge-c badge-primary">{{ product.Condition }}</span>
+        </div>
+        <div class="detail-desc">{{ product.Description }}</div>
+        <div class="detail-seller">
+            <i class="fas fa-user"></i> {{ product.seller.Name }} &bull;
+            <i class="fas fa-phone"></i> {{ product.seller.Phone }} &bull;
+            <i class="fas fa-calendar"></i> {{ product.PostedDate.strftime('%d %b %Y') }}
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="detail-sidebar">
+        <!-- Buy Section -->
+        {% if current_user.is_authenticated and current_user.UserID != product.SellerID and product.Status == 'AVAILABLE' %}
+        <div class="glass-card" style="padding:1.5rem;">
+            <h3 style="font-size:1.1rem; font-weight:700; margin-bottom:1rem;"><i class="fas fa-shopping-cart"></i> Buy Now</h3>
+            <form method="POST" action="{{ url_for('place_order', product_id=product.ProductID) }}">
+                <div class="form-group">
+                    <label for="payment_method">Payment Method</label>
+                    <select class="form-input" id="payment_method" name="payment_method" required>
+                        <option value="UPI">UPI</option>
+                        <option value="CARD">Credit/Debit Card</option>
+                        <option value="CASH">Cash on Meetup</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-success-c btn-block"><i class="fas fa-bolt"></i> Place Order</button>
+            </form>
+        </div>
+        {% endif %}
+
+        <!-- Actions -->
+        {% if current_user.is_authenticated %}
+        <div class="glass-card" style="padding:1.5rem;">
+            <h3 style="font-size:1.1rem; font-weight:700; margin-bottom:1rem;"><i class="fas fa-hand-pointer"></i> Actions</h3>
+            <div style="display:flex; flex-direction:column; gap:0.5rem;">
+                <form method="POST" action="{{ url_for('add_to_wishlist', product_id=product.ProductID) }}">
+                    <button type="submit" class="btn-danger-c btn-block btn-sm"><i class="fas fa-heart"></i> Add to Wishlist</button>
+                </form>
+                <a href="{{ url_for('messages') }}?user_id={{ product.SellerID }}" class="btn-outline-c btn-block btn-sm"><i class="fas fa-comment"></i> Message Seller</a>
+                <a href="{{ url_for('report') }}" class="btn-outline-c btn-block btn-sm" style="color:var(--warning);border-color:rgba(245,158,11,0.3);"><i class="fas fa-flag"></i> Report</a>
+            </div>
+        </div>
+        {% else %}
+        <div class="glass-card" style="padding:1.5rem; text-align:center;">
+            <p style="color:var(--text-muted);"><a href="{{ url_for('login') }}">Sign in</a> to buy, wishlist, or message the seller.</p>
+        </div>
+        {% endif %}
+
+        <!-- Reviews -->
+        <div class="glass-card" style="padding:1.5rem;">
+            <h3 style="font-size:1.1rem; font-weight:700; margin-bottom:1rem;"><i class="fas fa-star"></i> Reviews</h3>
+            {% for review in product.reviews %}
+            <div class="review-item">
+                <div class="review-header">
+                    <span class="review-author">{{ review.reviewer.Name }}</span>
+                    <div class="stars">
+                        {% for i in range(1, 6) %}
+                        <span class="star {% if i <= review.Rating %}filled{% endif %}">★</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                <p class="review-text">{{ review.Comment }}</p>
+            </div>
+            {% else %}
+            <p style="color:var(--text-muted); font-size:0.85rem;">No reviews yet.</p>
+            {% endfor %}
+
+            {% if current_user.is_authenticated %}
+            <div style="margin-top:1rem; padding-top:1rem; border-top:1px solid var(--glass-border);">
+                <h4 style="font-size:0.9rem; font-weight:600; margin-bottom:0.75rem;">Leave a Review</h4>
+                <form method="POST" action="{{ url_for('add_review', product_id=product.ProductID) }}">
+                    <div class="form-group">
+                        <label for="rating">Rating (1–5)</label>
+                        <input type="number" min="1" max="5" class="form-input" id="rating" name="rating" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="comment">Comment</label>
+                        <textarea class="form-input" id="comment" name="comment" rows="2" placeholder="Share your experience..."></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary-c btn-sm">Submit</button>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title_suffix %} — Register{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="glass-card auth-card">
+        <h2>Join Campusino</h2>
+        <p class="subtitle">Create your account and start trading</p>
+        <form method="POST" action="{{ url_for('register') }}">
+            <div class="form-group">
+                <label for="name"><i class="fas fa-user"></i> Full Name</label>
+                <input type="text" class="form-input" id="name" name="name" placeholder="John Doe" required>
+            </div>
+            <div class="form-group">
+                <label for="email"><i class="fas fa-envelope"></i> Email</label>
+                <input type="email" class="form-input" id="email" name="email" placeholder="you@campus.edu" required>
+            </div>
+            <div class="form-group">
+                <label for="phone"><i class="fas fa-phone"></i> Phone Number</label>
+                <input type="number" class="form-input" id="phone" name="phone" placeholder="9876543210" required>
+            </div>
+            <div class="form-group">
+                <label for="password"><i class="fas fa-lock"></i> Password</label>
+                <input type="password" class="form-input" id="password" name="password" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn-primary-c btn-block">Create Account</button>
+        </form>
+        <p class="footer-text">Already have an account? <a href="{{ url_for('login') }}">Sign in</a></p>
+    </div>
+</div>
+{% endblock %}

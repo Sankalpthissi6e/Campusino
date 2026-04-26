@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title_suffix %} — Wishlist{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2><i class="fas fa-heart" style="color:var(--danger);"></i> My Wishlist</h2>
+    <p>Products you've saved for later</p>
+</div>
+
+<div class="wishlist-grid">
+    {% for item in items %}
+    <div class="glass-card wishlist-card fade-in">
+        <h3 style="font-size:1.05rem; font-weight:700; margin-bottom:0.5rem;">{{ item.product.Title }}</h3>
+        <div style="font-size:1.2rem; font-weight:800; color:var(--amber); margin-bottom:0.5rem;">₹{{ "%.2f"|format(item.product.Price) }}</div>
+        <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:0;">{{ item.product.Description[:100] }}{% if item.product.Description|length > 100 %}...{% endif %}</p>
+        <div class="actions">
+            <a href="{{ url_for('product_detail', product_id=item.product.ProductID) }}" class="btn-primary-c btn-sm"><i class="fas fa-eye"></i> View</a>
+            <form method="POST" action="{{ url_for('remove_from_wishlist', item_id=item.WishlistID) }}">
+                <button type="submit" class="btn-danger-c btn-sm"><i class="fas fa-trash"></i> Remove</button>
+            </form>
+        </div>
+    </div>
+    {% else %}
+    <div class="empty-state" style="grid-column: 1 / -1;">
+        <div class="icon">💜</div>
+        <h3>Your wishlist is empty</h3>
+        <p><a href="{{ url_for('index') }}">Browse products</a> and save your favorites!</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

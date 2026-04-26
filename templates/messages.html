@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title_suffix %} — Messages{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2><i class="fas fa-comment-dots" style="color:var(--info);"></i> Messages</h2>
+    <p>Chat with buyers and sellers</p>
+</div>
+
+<div class="msg-layout">
+    <!-- Compose -->
+    <div class="glass-card msg-compose">
+        <h3 style="font-size:1.1rem; font-weight:700; margin-bottom:1rem;"><i class="fas fa-paper-plane"></i> Send Message</h3>
+        <form method="POST" action="{{ url_for('send_message') }}">
+            <div class="form-group">
+                <label for="receiver_id">To</label>
+                <select class="form-input" id="receiver_id" name="receiver_id" required>
+                    <option value="" disabled selected>Select user...</option>
+                    {% for user in users %}
+                    <option value="{{ user.UserID }}" {% if request.args.get('user_id') == user.UserID|string %}selected{% endif %}>{{ user.Name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="product_id">Product ID</label>
+                <input type="number" class="form-input" id="product_id" name="product_id" placeholder="Product #" required>
+            </div>
+            <div class="form-group">
+                <label for="content">Message</label>
+                <textarea class="form-input" id="content" name="content" rows="3" placeholder="Type your message..." required></textarea>
+            </div>
+            <button type="submit" class="btn-primary-c btn-block"><i class="fas fa-paper-plane"></i> Send</button>
+        </form>
+    </div>
+
+    <!-- Message List -->
+    <div>
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="inbox"><i class="fas fa-inbox"></i> Inbox</button>
+            <button class="tab-btn" data-tab="sent-msgs"><i class="fas fa-share"></i> Sent</button>
+        </div>
+
+        <div id="inbox" class="tab-content active">
+            {% for msg in received %}
+            <div class="msg-bubble fade-in">
+                <div class="meta">
+                    <span><strong>{{ msg.sender.Name }}</strong> &bull; Product #{{ msg.ProductID }}</span>
+                    <span>{{ msg.Timestamp.strftime('%d %b %Y %H:%M') }}</span>
+                </div>
+                <div class="text">{{ msg.MessageText }}</div>
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <div class="icon">📭</div>
+                <h3>No messages received</h3>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div id="sent-msgs" class="tab-content">
+            {% for msg in sent %}
+            <div class="msg-bubble fade-in">
+                <div class="meta">
+                    <span>To: <strong>{{ msg.receiver.Name }}</strong> &bull; Product #{{ msg.ProductID }}</span>
+                    <span>{{ msg.Timestamp.strftime('%d %b %Y %H:%M') }}</span>
+                </div>
+                <div class="text">{{ msg.MessageText }}</div>
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <div class="icon">✉️</div>
+                <h3>No messages sent</h3>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

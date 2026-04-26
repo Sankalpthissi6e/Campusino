@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title_suffix %} — Browse{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <h1>Your Campus. Your Market.</h1>
+    <p>Buy, sell, and rent with fellow students. The smartest way to trade on campus.</p>
+    <div class="search-wrapper">
+        <i class="fas fa-search search-icon"></i>
+        <input type="text" id="searchInput" placeholder="Search for textbooks, electronics, furniture...">
+    </div>
+</section>
+
+<!-- Category Pills -->
+<div class="category-pills">
+    <a href="{{ url_for('index') }}" class="pill {% if not current_category %}active{% endif %}">All</a>
+    {% for category in categories %}
+    <a href="{{ url_for('category_products', category_id=category.CategoryID) }}" class="pill {% if current_category and current_category.CategoryID == category.CategoryID %}active{% endif %}">
+        {{ category.CategoryName }}
+    </a>
+    {% endfor %}
+</div>
+
+<!-- Product Grid -->
+<div class="product-grid">
+    {% for product in products %}
+    <div class="fade-in">
+        <a href="{{ url_for('product_detail', product_id=product.ProductID) }}" style="text-decoration:none; color:inherit;">
+        <div class="glass-card product-card">
+            <div class="card-header-row">
+                <h3>{{ product.Title }}</h3>
+                <span class="type-badge {{ product.Type|lower }}">{{ product.Type }}</span>
+            </div>
+            <div class="price">₹{{ "%.2f"|format(product.Price) }}</div>
+            <p class="desc">{{ product.Description[:120] }}{% if product.Description|length > 120 %}...{% endif %}</p>
+            <p class="condition"><i class="fas fa-tag"></i> {{ product.Condition }}</p>
+            <p class="seller"><i class="fas fa-user"></i> {{ product.seller.Name }}</p>
+        </div>
+        </a>
+    </div>
+    {% else %}
+    <div class="empty-state" style="grid-column: 1 / -1;">
+        <div class="icon">📦</div>
+        <h3>No products found</h3>
+        <p>Be the first to list something! <a href="{{ url_for('add_product') }}">Add a product</a></p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

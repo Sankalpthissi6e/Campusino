@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title_suffix %} — Page Not Found{% endblock %}
+
+{% block content %}
+<div class="error-page">
+    <div class="code">404</div>
+    <h2>Lost on Campus?</h2>
+    <p>The page you're looking for doesn't exist or has been moved.</p>
+    <a href="{{ url_for('index') }}" class="btn-primary-c"><i class="fas fa-home"></i> Back to Home</a>
+</div>
+{% endblock %}

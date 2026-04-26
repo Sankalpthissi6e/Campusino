@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Campusino — The premium campus marketplace for students to buy, sell, and rent.">
+    <title>Campusino{% block title_suffix %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="campusino-nav">
+        <div class="container">
+            <a class="nav-brand" href="{{ url_for('index') }}">✦ Campusino</a>
+            <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
+            <ul class="nav-links">
+                {% if current_user.is_authenticated %}
+                    <li><a href="{{ url_for('index') }}"><i class="fas fa-store"></i> Browse</a></li>
+                    <li><a href="{{ url_for('add_product') }}"><i class="fas fa-plus-circle"></i> Sell</a></li>
+                    <li><a href="{{ url_for('orders') }}"><i class="fas fa-receipt"></i> Orders</a></li>
+                    <li><a href="{{ url_for('wishlist') }}"><i class="fas fa-heart"></i> Wishlist</a></li>
+                    <li><a href="{{ url_for('messages') }}"><i class="fas fa-comment-dots"></i> Messages</a></li>
+                    <li><a href="{{ url_for('profile') }}" class="nav-user"><i class="fas fa-user-circle"></i> {{ current_user.Name }}</a></li>
+                    <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('index') }}"><i class="fas fa-store"></i> Browse</a></li>
+                    <li><a href="{{ url_for('login') }}" class="btn-primary-c btn-sm">Login</a></li>
+                    <li><a href="{{ url_for('register') }}" class="btn-outline-c btn-sm">Register</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Toast Notifications -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="toast-container">
+            {% for category, message in messages %}
+            <div class="toast {{ category }}">
+                {% if category == 'success' %}<i class="fas fa-check-circle"></i>
+                {% elif category == 'error' %}<i class="fas fa-exclamation-circle"></i>
+                {% else %}<i class="fas fa-info-circle"></i>{% endif %}
+                {{ message }}
+                <button class="toast-close">&times;</button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Main Content -->
+    <main class="main-container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="campusino-footer">
+        <div class="container">
+            <p><span class="brand">✦ Campusino</span> &mdash; Your Campus. Your Market.</p>
+            <p>&copy; 2026 Campusino. Built with <i class="fas fa-heart" style="color: var(--danger);"></i> for students.</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title_suffix %} — Orders{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2><i class="fas fa-receipt" style="color:var(--accent-light);"></i> My Orders</h2>
+    <p>Track your purchases and sales</p>
+</div>
+
+<div class="tabs">
+    <button class="tab-btn active" data-tab="purchases"><i class="fas fa-shopping-bag"></i> Purchases</button>
+    <button class="tab-btn" data-tab="sales"><i class="fas fa-hand-holding-usd"></i> Sales</button>
+</div>
+
+<div id="purchases" class="tab-content active">
+    {% for order in orders %}
+    <div class="glass-card order-card fade-in">
+        <div class="order-info">
+            <h4><a href="{{ url_for('product_detail', product_id=order.product.ProductID) }}">{{ order.product.Title }}</a></h4>
+            <p><i class="fas fa-calendar"></i> {{ order.OrderDate.strftime('%d %b %Y') }}</p>
+        </div>
+        <span class="badge-c {% if order.OrderStatus == 'CONFIRMED' %}badge-success{% elif order.OrderStatus == 'PENDING' %}badge-warning badge-pending{% else %}badge-danger{% endif %}">
+            {{ order.OrderStatus }}
+        </span>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="icon">🛒</div>
+        <h3>No purchases yet</h3>
+        <p><a href="{{ url_for('index') }}">Browse products</a> to get started!</p>
+    </div>
+    {% endfor %}
+</div>
+
+<div id="sales" class="tab-content">
+    {% for sale in sales %}
+    <div class="glass-card order-card fade-in">
+        <div class="order-info">
+            <h4><a href="{{ url_for('product_detail', product_id=sale.product.ProductID) }}">{{ sale.product.Title }}</a></h4>
+            <p><i class="fas fa-user"></i> {{ sale.buyer.Name }} &bull; {{ sale.OrderDate.strftime('%d %b %Y') }}</p>
+        </div>
+        <span class="badge-c {% if sale.OrderStatus == 'CONFIRMED' %}badge-success{% elif sale.OrderStatus == 'PENDING' %}badge-warning badge-pending{% else %}badge-danger{% endif %}">
+            {{ sale.OrderStatus }}
+        </span>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="icon">📦</div>
+        <h3>No sales yet</h3>
+        <p><a href="{{ url_for('add_product') }}">List a product</a> to start selling!</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
