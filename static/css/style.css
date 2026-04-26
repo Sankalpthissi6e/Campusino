@@ -343,9 +343,70 @@ textarea.form-input{resize:vertical;min-height:90px}
   .profile-stats{grid-template-columns:1fr}
   .hero h1{font-size:2.5rem}
   .product-grid{grid-template-columns:1fr}
+  .xp-bar-wrapper{flex-wrap:wrap;justify-content:center;padding:0.3rem 1rem}
 }
 @media(max-width:480px){
   .main-container{padding:1rem}
   .auth-card{padding:1.3rem}
   .order-card{flex-direction:column;align-items:flex-start;gap:0.6rem}
 }
+
+/* ---- DARK MODE TOGGLE ---- */
+.dark-mode-btn{background:none;border:2px solid var(--ink);color:var(--ink);font-size:1.1rem;cursor:pointer;padding:0.25rem 0.5rem;transition:var(--transition);line-height:1;box-shadow:2px 2px 0 var(--ink)}
+.dark-mode-btn:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink)}
+
+/* ---- XP / GAMIFICATION BAR ---- */
+.xp-bar-wrapper{display:flex;align-items:center;gap:0.6rem;max-width:1100px;margin:0 auto;padding:0.3rem 1.5rem;border-top:1px dashed var(--paper-line)}
+.level-badge{font-family:'Patrick Hand',cursive;font-size:0.85rem;font-weight:700;color:var(--ink);white-space:nowrap}
+.xp-track{flex:1;height:6px;background:var(--paper-dark);border:1px solid var(--ink);position:relative;overflow:hidden;max-width:200px}
+.xp-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--neon-cyan),var(--neon-green));transition:width 0.6s ease}
+.xp-label{font-family:'Patrick Hand',cursive;font-size:0.8rem;color:var(--ink-muted);white-space:nowrap}
+.streak-badge{font-family:'Patrick Hand',cursive;font-size:0.85rem;font-weight:700;color:var(--ink);white-space:nowrap}
+
+/* XP Toast */
+.xp-toast{border-left:5px solid var(--neon-yellow)!important;font-family:'Patrick Hand',cursive!important}
+
+/* ---- MODE SWITCH ANIMATION ---- */
+.mode-switch-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--ink);z-index:99999;opacity:0;pointer-events:none;transition:opacity 0.25s ease}
+.mode-switch-overlay.active{opacity:1}
+
+/* ---- DARK MODE ---- */
+body.dark-mode{
+  --paper: #1a1a2e;
+  --paper-dark: #16213e;
+  --paper-line: #2a2a4a;
+  --ink: #e0e0e0;
+  --ink-light: #b0b0c0;
+  --ink-muted: #707088;
+  background-image:none;
+  background-color:var(--paper);
+}
+body.dark-mode::before{display:none}
+body.dark-mode .campusino-nav{background:var(--paper-dark);border-bottom-color:var(--ink-muted);box-shadow:0 3px 0 var(--ink-muted)}
+body.dark-mode .glass-card{background:var(--paper-dark);border-color:var(--ink-muted);box-shadow:3px 3px 0 rgba(255,255,255,0.05)}
+body.dark-mode .glass-card::before{border-color:var(--ink-muted)}
+body.dark-mode .glass-card:hover{box-shadow:5px 5px 0 rgba(255,255,255,0.08)}
+body.dark-mode .form-input{background:var(--paper);border-color:var(--ink-muted);color:var(--ink)}
+body.dark-mode .form-input::placeholder{color:var(--ink-muted)}
+body.dark-mode .search-wrapper input{background:var(--paper);border-color:var(--ink-muted);color:var(--ink);box-shadow:3px 3px 0 rgba(255,255,255,0.05)}
+body.dark-mode .pill{background:var(--paper-dark);border-color:var(--ink-muted);color:var(--ink-light);box-shadow:2px 2px 0 rgba(255,255,255,0.05)}
+body.dark-mode .pill:hover,body.dark-mode .pill.active{background:var(--ink);color:var(--paper);border-color:var(--neon-cyan)}
+body.dark-mode .btn-outline-c{background:var(--paper-dark);border-color:var(--ink-muted);color:var(--ink);box-shadow:2px 2px 0 rgba(255,255,255,0.05)}
+body.dark-mode .msg-bubble{background:var(--paper);border-color:var(--ink-muted);box-shadow:2px 2px 0 rgba(255,255,255,0.05)}
+body.dark-mode .toast{background:var(--paper-dark);border-color:var(--ink-muted);color:var(--ink);box-shadow:3px 3px 0 rgba(255,255,255,0.05)}
+body.dark-mode .campusino-footer{border-top-color:var(--ink-muted)}
+body.dark-mode .xp-bar-wrapper{border-top-color:var(--ink-muted)}
+body.dark-mode .xp-track{background:var(--paper);border-color:var(--ink-muted)}
+body.dark-mode .dark-mode-btn{border-color:var(--ink-muted);color:var(--ink);box-shadow:2px 2px 0 rgba(255,255,255,0.05)}
+body.dark-mode .avatar{background:var(--neon-purple)}
+body.dark-mode ::-webkit-scrollbar-track{background:var(--paper-dark)}
+body.dark-mode ::-webkit-scrollbar-thumb{background:var(--ink-muted)}
+body.dark-mode .nav-links a:hover{border-color:var(--ink-muted);box-shadow:2px 2px 0 var(--ink-muted)}
+
+/* Multicolor neon edges in dark mode */
+body.dark-mode .product-grid .fade-in:nth-child(6n+1) .glass-card:hover{border-color:var(--neon-cyan);box-shadow:0 0 15px var(--neon-cyan)}
+body.dark-mode .product-grid .fade-in:nth-child(6n+2) .glass-card:hover{border-color:var(--neon-pink);box-shadow:0 0 15px var(--neon-pink)}
+body.dark-mode .product-grid .fade-in:nth-child(6n+3) .glass-card:hover{border-color:var(--neon-green);box-shadow:0 0 15px var(--neon-green)}
+body.dark-mode .product-grid .fade-in:nth-child(6n+4) .glass-card:hover{border-color:var(--neon-purple);box-shadow:0 0 15px var(--neon-purple)}
+body.dark-mode .product-grid .fade-in:nth-child(6n+5) .glass-card:hover{border-color:var(--neon-yellow);box-shadow:0 0 15px var(--neon-yellow)}
+body.dark-mode .product-grid .fade-in:nth-child(6n+6) .glass-card:hover{border-color:var(--neon-orange);box-shadow:0 0 15px var(--neon-orange)}

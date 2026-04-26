@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
+    <script>if(localStorage.getItem('campusino-theme')==='dark')document.body.classList.add('dark-mode');</script>
     <!-- Navbar -->
     <nav class="campusino-nav">
         <div class="container">
@@ -28,7 +29,15 @@
                     <li><a href="{{ url_for('login') }}" class="btn-primary-c btn-sm">Login</a></li>
                     <li><a href="{{ url_for('register') }}" class="btn-outline-c btn-sm">Register</a></li>
                 {% endif %}
+                <li><button id="darkModeToggle" class="dark-mode-btn" title="Toggle dark mode">🌙</button></li>
             </ul>
+        </div>
+        <!-- Gamification Bar -->
+        <div class="xp-bar-wrapper">
+            <span id="levelBadge" class="level-badge">🌱 Lv.1</span>
+            <div class="xp-track"><div id="xpBar" class="xp-fill"></div></div>
+            <span id="xpLabel" class="xp-label">0 XP</span>
+            <span id="streakCount" class="streak-badge">🔥 1</span>
         </div>
     </nav>
 
