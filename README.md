@@ -1,10 +1,14 @@
 # ✦ Campusino
 
-> **Your Campus. Your Market.** — A premium marketplace for college students to buy, sell, and rent products.
+> **Your Campus. Your Market.** — A premium marketplace for college students to buy, sell, and rent products on campus.
+
+### 🌐 [Live Demo → campusino.onrender.com](https://campusino.onrender.com)
 
 ![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![Flask](https://img.shields.io/badge/Flask-3.1-000000?style=for-the-badge&logo=flask&logoColor=white)
 ![SQLite](https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white)
+![Render](https://img.shields.io/badge/Render-Live-46E3B7?style=for-the-badge&logo=render&logoColor=white)
+![License](https://img.shields.io/badge/License-Educational-yellow?style=for-the-badge)
 
 ---
 
