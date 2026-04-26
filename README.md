@@ -22,8 +22,9 @@
 - 🛡️ **Reporting** — Report suspicious listings
 - 👤 **User Profiles** — Track your listings, purchases, and reviews
 - 🔐 **Authentication** — Secure login/register with password hashing
-- 🌙 **Dark Mode UI** — Premium glassmorphism design
-
+- 🌙 **Dark/Light Mode** — Toggleable theme with smooth overlay animations
+- 🎮 **Gamification** — Earn XP, level up, and maintain streaks by interacting with the app
+- 🎨 **Sketch Neon UI** — Unique pencil sketch design with glowing neon edges
 ---
 
 ## 🛠️ Tech Stack
