@@ -131,11 +131,3 @@ python -m pytest test_app.py -v
 ```
 
 ---
-
-## 📜 License
-
-This project is for educational purposes.
-
----
-
-<p align="center">Built with ❤️ by <strong>Sankalp</strong></p>
