@@ -2,24 +2,24 @@
 
 > **Your Campus. Your Market.** — A premium marketplace for college students to buy, sell, and rent products on campus.
 
-### 🌐 [Live Demo → campusino.onrender.com](https://campusino.onrender.com)
+###  [Live Demo → campusino.onrender.com](https://campusino.onrender.com)
 
-## ✨ Features
+##  Features
 
-- 🛒 **Buy & Sell** — List products for sale or rent with detailed descriptions
-- 🔍 **Search & Filter** — Real-time search with category-based filtering
-- 💬 **Messaging** — Chat directly with buyers and sellers
-- ⭐ **Reviews** — Rate and review purchased products
-- ❤️ **Wishlist** — Save products for later
-- 🛡️ **Reporting** — Report suspicious listings
-- 👤 **User Profiles** — Track your listings, purchases, and reviews
-- 🔐 **Authentication** — Secure login/register with password hashing
-- 🌙 **Dark/Light Mode** — Toggleable theme with smooth overlay animations
-- 🎮 **Gamification** — Earn XP, level up, and maintain streaks by interacting with the app
-- 🎨 **Sketch Neon UI** — Unique pencil sketch design with glowing neon edges
+-  **Buy & Sell** — List products for sale or rent with detailed descriptions
+-  **Search & Filter** — Real-time search with category-based filtering
+-  **Messaging** — Chat directly with buyers and sellers
+-  **Reviews** — Rate and review purchased products
+-  **Wishlist** — Save products for later
+-  **Reporting** — Report suspicious listings
+-  **User Profiles** — Track your listings, purchases, and reviews
+-  **Authentication** — Secure login/register with password hashing
+-  **Dark/Light Mode** — Toggleable theme with smooth overlay animations
+-  **Gamification** — Earn XP, level up, and maintain streaks by interacting with the app
+-  **Sketch Neon UI** — Unique pencil sketch design with glowing neon edges
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 | Layer | Technology |
 |-------|-----------|
@@ -31,7 +31,7 @@
 
 ---
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### Prerequisites
 - Python 3.10+
@@ -101,7 +101,7 @@ Campusino/
 
 ---
 
-## 🗄️ Database Schema
+##  Database Schema
 
 ```mermaid
 erDiagram
@@ -121,7 +121,7 @@ erDiagram
 
 ---
 
-## 🧪 Testing
+##  Testing
 
 ```bash
 python -m pytest test_app.py -v
